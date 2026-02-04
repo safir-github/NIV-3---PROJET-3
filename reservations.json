@@ -1,0 +1,37 @@
+[
+    {
+        "catwayNumber": 1,
+        "clientName": "Pierre Dupont",
+        "boatName": "L'Aigle des Mers",
+        "checkIn": "2024-06-15T09:00:00Z",
+        "checkOut": "2024-06-22T17:00:00Z"
+    },
+    {
+        "catwayNumber": 2,
+        "clientName": "Thomas Leroy",
+        "boatName": "Le Dauphin Bleu",
+        "checkIn": "2024-07-12T11:30:00Z",
+        "checkOut": "2024-07-19T11:30:00Z"
+    },
+    {
+        "catwayNumber": 3,
+        "clientName": "Marc Bernard",
+        "boatName": "L'Orque",
+        "checkIn": "2024-08-05T08:00:00Z",
+        "checkOut": "2024-08-12T16:00:00Z"
+    },
+    {
+        "catwayNumber": 4,
+        "clientName": "Luc Petit",
+        "boatName": "Le Faucon Pèlerin",
+        "checkIn": "2024-09-01T14:00:00Z",
+        "checkOut": "2024-09-08T10:00:00Z"
+    },
+    {
+        "catwayNumber": 5,
+        "clientName": "Antoine Moreau",
+        "boatName": "Le Requin",
+        "checkIn": "2024-07-25T12:00:00Z",
+        "checkOut": "2024-08-03T12:00:00Z"
+    }
+]

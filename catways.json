@@ -1,0 +1,27 @@
+[
+    {
+        "catwayNumber": 1,
+        "type": "long",
+        "catwayState": "En bon état, réparations récentes"
+    },
+    {
+        "catwayNumber": 2,
+        "type": "short",
+        "catwayState": "Disponible"
+    },
+    {
+        "catwayNumber": 3,
+        "type": "long",
+        "catwayState": "Indisponible"
+    },
+    {
+        "catwayNumber": 4,
+        "type": "short",
+        "catwayState": "Satisfaisant"
+    },
+    {
+        "catwayNumber": 5,
+        "type": "long",
+        "catwayState": "Disponible partiellement"
+    }
+]
