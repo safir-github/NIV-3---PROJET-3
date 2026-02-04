@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem:*)",
+      "Bash(Select-Object Name, Mode)",
+      "Bash(node:*)",
+      "Bash(ls:*)"
+    ]
+  }
+}
