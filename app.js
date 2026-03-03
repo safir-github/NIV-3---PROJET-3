@@ -1,6 +1,7 @@
 require('dotenv').config(); // Charge les variables du .env
 const express = require('express');
 const connectDB = require('./config/db');
+const userRoutes = require('./routes/userRoutes')
 
 const app = express();
 
@@ -14,6 +15,9 @@ app.use(express.json());
 app.get('/', (req, res) => {
     res.send('Bienvenue sur l\'API du Port de Plaisance Russell !');
 });
+
+// Routes de l'API
+app.use('/api', userRoutes);
 
 // Démarrage du serveur
 const PORT = process.env.PORT || 3000;
