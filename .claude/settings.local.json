@@ -4,7 +4,12 @@
       "Bash(Get-ChildItem:*)",
       "Bash(Select-Object Name, Mode)",
       "Bash(node:*)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(npm:*)",
+      "Bash(mongosh:*)",
+      "Bash(brew list:*)",
+      "Bash(brew:*)",
+      "Bash(lsof:*)"
     ]
   }
 }
