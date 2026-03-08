@@ -4,7 +4,16 @@ const bcrypt = require("bcrypt");
 const getAllUsers = async () => {
     try {
         const users = await User.find();
-        return users;
+
+
+        const usersWithoutPassword = users.map(user => {
+            const userObject = user.toObject();
+            delete userObject.password;
+            return userObject;
+        });
+
+        return usersWithoutPassword;
+
     } catch (error) {
         throw error;
     }
@@ -21,7 +30,10 @@ const getUserById = async (id) => {
             throw new Error("Utilisateur non trouvé");
         }
 
-        return user;
+        const userObject = user.toObject();
+        delete userObject.password;
+        return userObject;
+
     } catch (error) {
         throw error;
     }
