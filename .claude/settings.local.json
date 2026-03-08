@@ -10,7 +10,8 @@
       "Bash(brew list:*)",
       "Bash(brew:*)",
       "Bash(lsof:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(pkill:*)"
     ]
   }
 }
