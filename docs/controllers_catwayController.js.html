@@ -1,10 +1,38 @@
-const catwayService = require("../services/catwayService");
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: controllers/catwayController.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: controllers/catwayController.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>const catwayService = require("../services/catwayService");
 
 /**
  * Contrôleur pour récupérer tous les catways
  * @param {Object} req - Requête Express
  * @param {Object} res - Réponse Express
- * @returns {Promise<void>} Envoie la liste des catways en JSON (status 200)
+ * @returns {Promise&lt;void>} Envoie la liste des catways en JSON (status 200)
  */
 const getAllCatways = async (req, res) => {
     try {
@@ -21,7 +49,7 @@ const getAllCatways = async (req, res) => {
  * @param {Object} req.params - Paramètres de route
  * @param {string} req.params.id - ID du catway
  * @param {Object} res - Réponse Express
- * @returns {Promise<void>} Envoie le catway en JSON (status 200) ou erreur (status 404)
+ * @returns {Promise&lt;void>} Envoie le catway en JSON (status 200) ou erreur (status 404)
  */
 const getCatwayById = async (req, res) => {
     try {
@@ -43,7 +71,7 @@ const getCatwayById = async (req, res) => {
  * @param {Object} req.body.type - Type du catway
  * @param {Object} req.body.catwayState - État du catway
  * @param {Object} res - Réponse Express
- * @returns {Promise<void>} Envoie le catway créé en JSON (status 201) ou erreur (status 500)
+ * @returns {Promise&lt;void>} Envoie le catway créé en JSON (status 201) ou erreur (status 500)
  */
 const createCatway = async (req, res) => {
     try {
@@ -63,7 +91,7 @@ const createCatway = async (req, res) => {
  * @param {string} req.params.id - ID du catway à modifier
  * @param {Object} req.body - Nouvelles données du catway
  * @param {Object} res - Réponse Express
- * @returns {Promise<void>} Envoie le catway mis à jour en JSON (status 200) ou erreur (status 500)
+ * @returns {Promise&lt;void>} Envoie le catway mis à jour en JSON (status 200) ou erreur (status 500)
  */
 const updateCatway = async (req, res) => {
     try {
@@ -85,7 +113,7 @@ const updateCatway = async (req, res) => {
  * @param {string} req.params.id - ID du catway à modifier
  * @param {Object} req.body - Champs à modifier (tous optionnels)
  * @param {Object} res - Réponse Express
- * @returns {Promise<void>} Envoie le catway modifié en JSON (status 200) ou erreur (status 500)
+ * @returns {Promise&lt;void>} Envoie le catway modifié en JSON (status 200) ou erreur (status 500)
  */
 const patchCatway = async (req, res) => {
     try {
@@ -105,7 +133,7 @@ const patchCatway = async (req, res) => {
  * @param {Object} req.params - Paramètres de route
  * @param {string} req.params.id - ID du catway à supprimer
  * @param {Object} res - Réponse Express
- * @returns {Promise<void>} Envoie un message de confirmation en JSON (status 200) ou erreur (status 500)
+ * @returns {Promise&lt;void>} Envoie un message de confirmation en JSON (status 200) ou erreur (status 500)
  */
 const deleteCatway = async (req, res) => {
     try {
@@ -130,3 +158,26 @@ module.exports = {
     patchCatway,
     deleteCatway,
 };
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#authMiddleware">authMiddleware</a></li><li><a href="global.html#authenticateUser">authenticateUser</a></li><li><a href="global.html#createCatway">createCatway</a></li><li><a href="global.html#createReservation">createReservation</a></li><li><a href="global.html#createUser">createUser</a></li><li><a href="global.html#deleteCatway">deleteCatway</a></li><li><a href="global.html#deleteReservation">deleteReservation</a></li><li><a href="global.html#deleteUser">deleteUser</a></li><li><a href="global.html#getAllCatways">getAllCatways</a></li><li><a href="global.html#getAllUsers">getAllUsers</a></li><li><a href="global.html#getCatwayById">getCatwayById</a></li><li><a href="global.html#getReservationById">getReservationById</a></li><li><a href="global.html#getReservationsByCatway">getReservationsByCatway</a></li><li><a href="global.html#getUserById">getUserById</a></li><li><a href="global.html#login">login</a></li><li><a href="global.html#patchCatway">patchCatway</a></li><li><a href="global.html#updateCatway">updateCatway</a></li><li><a href="global.html#updateUser">updateUser</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Tue Mar 10 2026 12:39:04 GMT+0000 (GMT+00:00)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

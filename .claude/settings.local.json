@@ -11,7 +11,8 @@
       "Bash(brew:*)",
       "Bash(lsof:*)",
       "Bash(curl:*)",
-      "Bash(pkill:*)"
+      "Bash(pkill:*)",
+      "Bash(done)"
     ]
   }
 }
