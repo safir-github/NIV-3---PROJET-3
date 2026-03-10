@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Port de Plaisance</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <!-- Header avec nom utilisateur et bouton déconnexion -->
+    <header>
+        <div class="container header-content">
+            <h1>⚓ Port de Plaisance - Dashboard</h1>
+            <div>
+                <span id="userInfo"></span>
+                <button class="logout-btn" onclick="logout()">Déconnexion</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Navigation entre les sections -->
+        <nav>
+            <ul>
+                <li><button onclick="showSection('dashboard')" class="active">📊 Dashboard</button></li>
+                <li><button onclick="showSection('catways')">⚓ Catways</button></li>
+                <li><button onclick="showSection('users')">👥 Utilisateurs</button></li>
+                <li><button onclick="showSection('reservations')">📅 Réservations</button></li>
+            </ul>
+        </nav>
+
+        <div id="message"></div>
+
+        <!-- Section Dashboard (vue d'ensemble) -->
+        <div id="dashboard" class="section active">
+            <h2>Vue d'ensemble</h2>
+            <p>Bienvenue sur le dashboard du Port de Plaisance !</p>
+        </div>
+
+        <!-- Section Catways -->
+        <div id="catways" class="section">
+            <h2>Gestion des Catways</h2>
+            <p>Liste des catways disponibles dans le port.</p>
+        </div>
+
+        <!-- Section Users -->
+        <div id="users" class="section">
+            <h2>Gestion des Utilisateurs</h2>
+            <p>Liste des utilisateurs enregistrés.</p>
+        </div>
+
+        <!-- Section Reservations -->
+        <div id="reservations" class="section">
+            <h2>Gestion des Réservations</h2>
+            <p>Liste des réservations par catway.</p>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/ui.js"></script>
+</body>
+
+</html>
