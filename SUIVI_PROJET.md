@@ -1,7 +1,8 @@
 # 📋 Suivi du Projet - API Port de Plaisance Russell
 
 **Date de création :** 26 février 2026
-**Statut actuel :** Phase 2 en cours (Authentification & Utilisateurs)
+**Dernière mise à jour :** 10 mars 2026
+**Statut actuel :** Phase 4 TERMINÉE (Backend 100% complet)
 **Plateforme précédente :** Windows
 **Plateforme actuelle :** Mac
 
@@ -182,122 +183,139 @@ node app.js
 
 ---
 
-## 🚧 Phase 2 : Authentification & Utilisateurs - EN COURS
+## ✅ Phase 2 : Authentification & Utilisateurs - TERMINÉE
 
 ### 2.1 Modèle User ✅
 **Fichier `models/user.js` créé :**
-```javascript
-const mongoose = require('mongoose');
+- name (String, requis, trim)
+- email (String, requis, unique, lowercase)
+- password (String, requis)
 
-const userSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-    trim: true
-  },
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-    trim: true,
-    lowercase: true
-  },
-  password: {
-    type: String,
-    required: true
-  }
-});
+### 2.2 Service User ✅
+**Fichier `services/userService.js` créé avec 6 fonctions :**
+- ✅ `getAllUsers()` - Récupère tous les utilisateurs (SANS password)
+- ✅ `getUserById(id)` - Récupère un utilisateur par ID (vérif existence, SANS password)
+- ✅ `createUser(userData)` - Crée un utilisateur (hash password avec bcrypt, SANS password dans la réponse)
+- ✅ `updateUser(id, userData)` - Modifie un utilisateur (hash password si fourni, SANS password dans la réponse)
+- ✅ `deleteUser(id)` - Supprime un utilisateur (vérif existence)
+- ✅ `authenticateUser(email, password)` - Vérifie identifiants (bcrypt.compare, message d'erreur générique, SANS password)
 
-const User = mongoose.model('User', userSchema);
+**Point clé SÉCURITÉ :** Toutes les fonctions suppriment le password avant de retourner (`toObject()` + `delete password`)
 
-module.exports = User;
-```
+### 2.3 Controller User ✅
+**Fichier `controllers/userController.js` créé avec 6 fonctions :**
+- ✅ `getAllUsers(req, res)` → 200 ou 500
+- ✅ `getUserById(req, res)` → 200 ou 404
+- ✅ `createUser(req, res)` → 201 ou 500
+- ✅ `updateUser(req, res)` → 200 ou 500
+- ✅ `deleteUser(req, res)` → 200 ou 404
+- ✅ `login(req, res)` → Génère token JWT avec `{ userId, exp: "24h" }`, renvoie `{ user, token }` → 200 ou 500
 
-**Champs du modèle User :**
-- `name` (String, requis) - Nom de l'utilisateur
-- `email` (String, requis, unique) - Email (unique, converti en minuscules)
-- `password` (String, requis) - Mot de passe (sera hashé)
+**Import important :** `const jwt = require("jsonwebtoken");` pour générer les tokens
 
-### 2.2 Service User - PARTIELLEMENT TERMINÉ ⏳
+### 2.4 Routes User ✅
+**Fichier `routes/userRoutes.js` créé :**
+- ✅ `GET /api/users` (protégé par authMiddleware)
+- ✅ `GET /api/users/:id` (protégé)
+- ✅ `POST /api/users` (PUBLIQUE - création de compte)
+- ✅ `PUT /api/users/:id` (protégé)
+- ✅ `DELETE /api/users/:id` (protégé)
+- ✅ `POST /api/login` (PUBLIQUE - pour obtenir un token)
 
-**Fichier `services/userService.js` créé avec :**
+**Import dans `app.js` :** `app.use('/api', userRoutes);`
 
-✅ **Fonction `getAllUsers` :**
-```javascript
-const getAllUsers = async () => {
-    try {
-        const users = await User.find();
-        return users;
-    } catch (error) {
-        throw error;
-    }
-};
-```
+### 2.5 Middleware d'authentification JWT ✅
+**Fichier `middlewares/authMiddleware.js` créé :**
+- ✅ Récupère le token depuis `req.header("Authorization")` (enlève "Bearer ")
+- ✅ Vérifie que le token existe → 401 si manquant
+- ✅ Vérifie le token avec `jwt.verify(token, process.env.JWT_SECRET)`
+- ✅ Extrait `userId` du token et l'ajoute à `req.userId`
+- ✅ Appelle `next()` pour continuer vers le controller
+- ✅ Gère les erreurs (token invalide/expiré) → 401
 
-✅ **Fonction `getUserById` :**
-```javascript
-const getUserById = async (id) => {
-    try {
-        const user = await User.findById(id);
-        return user;
-    } catch (error) {
-        throw error;
-    }
-};
-```
+---
 
-**Fonctions restantes à créer :**
-- ⏳ `createUser` - Créer un utilisateur
-- ⏳ `updateUser` - Modifier un utilisateur
-- ⏳ `deleteUser` - Supprimer un utilisateur
-- ⏳ `authenticateUser` - Vérifier les identifiants (login)
+---
 
-### 2.3 Controller User - À FAIRE ❌
-- ⏳ Créer `controllers/userController.js`
-- ⏳ Implémenter les fonctions de gestion HTTP
-- ⏳ Ne PAS utiliser de codes HTTP dans le service (séparation des préoccupations)
+## ✅ Phase 3 : Catways (CRUD) - TERMINÉE
 
-### 2.4 Routes User - À FAIRE ❌
-- ⏳ Créer `routes/userRoutes.js`
-- ⏳ Définir les routes :
-  - `GET /users` - Lister tous les utilisateurs
-  - `GET /users/:id` - Récupérer un utilisateur
-  - `POST /users` - Créer un utilisateur
-  - `PUT /users/:id` - Modifier un utilisateur
-  - `DELETE /users/:id` - Supprimer un utilisateur
-  - `POST /login` - Se connecter
+### 3.1 Modèle Catway ✅
+**Fichier `models/catway.js` créé :**
+- `catwayNumber` (Number, requis, unique) - Numéro unique du catway
+- `type` (String, requis, enum: ['long', 'short']) - Type limité à ces 2 valeurs
+- `catwayState` (String, requis) - État du catway
 
-### 2.5 Middleware d'authentification - À FAIRE ❌
-- ⏳ Créer `middlewares/authMiddleware.js`
-- ⏳ Vérifier la présence du token JWT dans les headers
-- ⏳ Vérifier la validité du token
-- ⏳ Protéger les routes privées
+**Note :** Pas de password ou d'info sensible, donc pas de suppression de champs dans les réponses
+
+### 3.2 Service Catway ✅
+**Fichier `services/catwayService.js` créé avec 6 fonctions :**
+- ✅ `getAllCatways()` - Retourne tous les catways directement
+- ✅ `getCatwayById(id)` - Vérifie existence, retourne le catway
+- ✅ `createCatway(catwayData)` - Crée un nouveau catway
+- ✅ `updateCatway(id, catwayData)` - PUT complet (remplace tous les champs)
+- ✅ `patchCatway(id, catwayData)` - PATCH partiel (modifie SEULEMENT les champs fournis avec `!== undefined`)
+- ✅ `deleteCatway(id)` - Vérifie existence, supprime, retourne message
+
+**Point clé PUT vs PATCH :**
+- PUT = Remplace TOUS les champs (même si undefined)
+- PATCH = Modifie SEULEMENT les champs fournis
+
+### 3.3 Controller Catway ✅
+**Fichier `controllers/catwayController.js` créé avec 6 fonctions :**
+- Tous utilisent `req.params.id` et `req.body`
+- Codes HTTP : 200 (succès), 201 (créé), 500 (erreur)
+
+### 3.4 Routes Catway ✅
+**Fichier `routes/catwayRoutes.js` créé :**
+- ✅ `GET /api/catways`
+- ✅ `GET /api/catways/:id`
+- ✅ `POST /api/catways`
+- ✅ `PUT /api/catways/:id`
+- ✅ `PATCH /api/catways/:id` (route spéciale PATCH)
+- ✅ `DELETE /api/catways/:id`
+
+**Import dans `app.js` :** `app.use('/api', catwayRoutes);`
+
+---
+
+## ✅ Phase 4 : Réservations (Sous-ressource) - TERMINÉE
+
+### 4.1 Modèle Reservation ✅
+**Fichier `models/reservation.js` créé :**
+- `catwayNumber` (Number, requis) - Relation avec le catway
+- `clientName` (String, requis)
+- `boatName` (String, requis)
+- `checkIn` (Date, requis) - Date/heure d'arrivée (format ISO 8601)
+- `checkOut` (Date, requis) - Date/heure de départ
+
+**Note :** Les dates sont automatiquement converties par Mongoose en objets Date JavaScript
+
+### 4.2 Service Reservation ✅
+**Fichier `services/reservationService.js` créé avec 4 fonctions :**
+- ✅ `getReservationsByCatway(catwayNumber)` - Filtre par `{ catwayNumber }`
+- ✅ `getReservationById(id)` - Récupère par ID avec vérif existence
+- ✅ `createReservation(reservationData)` - Crée une réservation
+- ✅ `deleteReservation(id)` - Supprime avec vérif existence
+
+**Pas de PUT/PATCH pour les réservations (simplification)**
+
+### 4.3 Controller Reservation ✅
+**Fichier `controllers/reservationController.js` créé avec 4 fonctions :**
+- `getReservationsByCatway` : Utilise `parseInt(req.params.catwayNumber)` pour convertir le paramètre URL en Number
+- `createReservation` : Ajoute `catwayNumber` depuis l'URL aux données avec spread operator `{ ...req.body, catwayNumber }`
+
+### 4.4 Routes Réservation ✅
+**Ajoutées dans `routes/catwayRoutes.js` (sous-ressource) :**
+- ✅ `GET /api/catways/:catwayNumber/reservations` - Liste les réservations d'un catway
+- ✅ `GET /api/catways/:catwayNumber/reservations/:id` - Récupère une réservation spécifique
+- ✅ `POST /api/catways/:catwayNumber/reservations` - Crée une réservation pour ce catway
+- ✅ `DELETE /api/catways/:catwayNumber/reservations/:id` - Supprime une réservation
+
+**Import ajouté :** `const reservationController = require("../controllers/reservationController");`
 
 ---
 
 ## 📋 Phases restantes à compléter
-
-### Phase 3 : Catways (CRUD) ❌
-- ⏳ Modèle Catway
-- ⏳ Service Catway
-- ⏳ Controller Catway
-- ⏳ Routes Catway
-  - `GET /catways`
-  - `GET /catways/:id`
-  - `POST /catways`
-  - `PUT /catways/:id`
-  - `PATCH /catways/:id`
-  - `DELETE /catways/:id`
-
-### Phase 4 : Réservations (Sous-ressource) ❌
-- ⏳ Modèle Reservation
-- ⏳ Service Reservation
-- ⏳ Controller Reservation
-- ⏳ Routes (s `/catways/:id/reservations`)
-  - `GET /catways/:id/reservations`
-  - `GET /catways/:id/reservations/:idReservation`
-  - `POST /catways/:id/reservations`
-  - `DELETE /catways/:id/reservations/:idReservation`
 
 ### Phase 5 : Tests & Documentation ❌
 - ⏳ Tests unitaires avec Mocha (9 fonctionnalités)
@@ -312,6 +330,118 @@ const getUserById = async (id) => {
 ### Phase 7 : Déploiement ❌
 - ⏳ Déploiement sur plateforme cloud (Heroku, Render, etc.)
 - ⏳ Configuration de production
+
+---
+
+## 🎓 MÉTHODOLOGIE DE TRAVAIL APPLIQUÉE
+
+### Approche pédagogique (Rôle de Mentor)
+**Règle principale :** L'utilisateur fait les manipulations lui-même pour apprendre. Le mentor guide et explique, mais n'exécute PAS les commandes à sa place (sauf demande expresse).
+
+### Étapes pour chaque ressource (Users, Catways, Reservations)
+
+**1. Modèle d'abord**
+- Créer le schéma Mongoose avec tous les champs
+- Définir les types, la validité (required, unique, enum)
+- Exporter le modèle
+
+**2. Service ensuite (logique métier)**
+- Créer les fonctions async avec try/catch
+- JAMAIS de req/res dans le service (séparation des préoccupations)
+- JAMAIS de codes HTTP (200, 404, etc.) dans le service
+- TOUJOURS retourner les données ou throw error
+- Pour Users : supprimer le password avant de retourner (`toObject()` + `delete password`)
+- Utiliser Mongoose : `find()`, `findById()`, `findByIdAndUpdate()`, `findOne()`, etc.
+- Exporter toutes les fonctions
+
+**3. Controller après (gestion HTTP)**
+- Importer le service
+- Créer les fonctions async avec (req, res)
+- Récupérer `req.params.id` ou `req.params.catwayNumber`
+- Récupérer `req.body` pour POST/PUT/PATCH
+- Appeler les fonctions du service avec `await`
+- Retourner les réponses avec codes HTTP appropriés :
+  - 200 : Succès standard
+  - 201 : Ressource créée (POST)
+  - 404 : Non trouvé
+  - 500 : Erreur serveur
+- Exporter toutes les fonctions
+
+**4. Routes ensuite**
+- Importer express, router, controller
+- Créer les routes avec : `router.MÉTHODE(url, controller.fonction)`
+- PAS de parenthèses sur la fonction du controller
+- Exporter le router
+
+**5. Intégration dans app.js**
+- Importer les routes
+- Utiliser avec `app.use('/api', routes);`
+- Redémarrer le serveur après modifications
+
+**6. Tests avec curl**
+- POST pour créer
+- GET pour lister/récupérer
+- PUT pour remplacer tout
+- PATCH pour modifier partiellement
+- DELETE pour supprimer
+
+### Points clés à retenir
+
+| Concept | Règle |
+|---------|-------|
+| **Service vs Controller** | Service = logique métier, Controller = HTTP |
+| **Sécurité Users** | Hasher password, ne jamais le retourner |
+| **PUT vs PATCH** | PUT remplace tout, PATCH modifie les champs fournis |
+| **async/await** | Toujours utiliser avec MongoDB |
+| **try/catch** | Toujours pour gérer les erreurs |
+| **ObjectId MongoDB** | Les IDs sont des strings, pas des nombres |
+| **enum** | Limite les valeurs possibles (ex: type de catway) |
+| **Sous-ressource** | Routes imbriquées : `/catways/:id/reservations` |
+| **parseInt()** | Convertir les paramètres URL (toujours string) en Number |
+| **Spread operator** | `{ ...req.body, champAjouté }` pour fusionner |
+
+### Structure des fichiers créés
+
+```
+models/
+  user.js (3 champs)
+  catway.js (3 champs avec enum)
+  reservation.js (5 champs avec dates)
+
+services/
+  userService.js (6 fonctions, bcrypt pour password)
+  catwayService.js (6 fonctions, avec PATCH)
+  reservationService.js (4 fonctions, filtre par catwayNumber)
+
+controllers/
+  userController.js (6 fonctions, JWT pour login)
+  catwayController.js (6 fonctions)
+  reservationController.js (4 fonctions, avec parseInt)
+
+routes/
+  userRoutes.js (6 routes, authMiddleware pour protéger)
+  catwayRoutes.js (6 routes catways + 4 routes réservations)
+
+middlewares/
+  authMiddleware.js (vérifie JWT, ajoute req.userId)
+```
+
+### Commandes utiles
+
+```bash
+# Démarrer le serveur
+node app.js
+
+# Redémarrer après modifications
+pkill -f "node app.js" && node app.js
+
+# Tester avec curl
+curl http://localhost:3000/api/users
+curl -X POST http://localhost:3000/api/login -H "Content-Type: application/json" -d '{"email":"...","password":"..."}'
+
+# Vérifier si MongoDB tourne
+lsof -i :27017
+```
 
 ---
 
@@ -453,31 +583,105 @@ node app.js
 
 ---
 
-## 📝 RÉSUMÉ RAPIDE
+## 📝 RÉSUMÉ ACTUEL (Mise à jour : 10 mars 2026)
+
+**Backend : ✅ 100% TERMINÉ**
 
 **Fonctionnel :**
-- ✅ Structure du projet
-- ✅ Dépendances dans package.json
-- ✅ Configuration MongoDB (.env, config/db.js)
-- ✅ Serveur Express (app.js)
-- ✅ Données JSON (catways, reservations)
-- ✅ Modèle User (models/user.js)
-- ✅ Service User partiel (services/userService.js)
+- ✅ Structure du projet complète
+- ✅ Toutes les dépendances installées (express, mongoose, bcrypt, jsonwebtoken, mocha, chai, jsdoc, nodemon)
+- ✅ Configuration MongoDB (.env avec JWT_SECRET, config/db.js)
+- ✅ Serveur Express fonctionnel (app.js avec 3 routeurs)
+- ✅ Données JSON importées (catways, reservations dans MongoDB)
+- ✅ Modèles : User, Catway, Reservation
+- ✅ Services : User (6 fonctions), Catway (6 fonctions), Reservation (4 fonctions)
+- ✅ Controllers : User (6 fonctions avec JWT), Catway (6 fonctions), Reservation (4 fonctions)
+- ✅ Routes : Users (6 routes protégées), Catways (6 routes), Réservations (4 routes sous-ressource)
+- ✅ Middleware d'authentification JWT fonctionnel
+- ✅ Toutes les routes API testées et fonctionnelles
 
-**À faire immédiatement sur Mac :**
-1. Installer Node.js si non présent
-2. `npm install` pour installer les dépendances
-3. Installer MongoDB Community Server
-4. Installer MongoDB Compass
-5. Importer les données dans MongoDB
-6. Tester avec `node app.js`
+**API Endpoints disponibles :**
+```
+Users (avec authentification) :
+  POST /api/users (créer compte)
+  POST /api/login (connexion, retourne token)
+  GET /api/users (liste, avec token)
+  GET /api/users/:id (avec token)
+  PUT /api/users/:id (modifier, avec token)
+  DELETE /api/users/:id (supprimer, avec token)
 
-**Suite du développement :**
-1. Compléter le service User (createUser, updateUser, deleteUser, authenticateUser)
-2. Créer le controller User
-3. Créer les routes User
-4. Créer le middleware d'authentification JWT
-5. Continuer avec les catways et réservations
+Catways (CRUD complet) :
+  GET /api/catways (lister)
+  GET /api/catways/:id (récupérer)
+  POST /api/catways (créer)
+  PUT /api/catways/:id (remplacer tout)
+  PATCH /api/catways/:id (modifier partiellement)
+  DELETE /api/catways/:id (supprimer)
+
+Réservations (sous-ressource) :
+  GET /api/catways/:catwayNumber/reservations (lister réservations d'un catway)
+  GET /api/catways/:catwayNumber/reservations/:id (récupérer une réservation)
+  POST /api/catways/:catwayNumber/reservations (créer une réservation)
+  DELETE /api/catways/:catwayNumber/reservations/:id (supprimer une réservation)
+```
+
+**Progression du projet :**
+```
+✅ Phase 1 : Initialisation (100%)
+✅ Phase 2 : Authentification & Users (100%)
+✅ Phase 3 : Catways (100%)
+✅ Phase 4 : Réservations (100%)
+⏳ Phase 5 : Tests & Documentation (0%)
+⏳ Phase 6 : Front-end (0%)
+⏳ Phase 7 : Déploiement (0%)
+
+PROGRESSION TOTALE : 60%
+```
+
+**À faire (prochaine étape - Phase 5) :**
+1. ⏳ Créer des tests unitaires avec Mocha/Chai pour tester les 9 fonctionnalités
+2. ⏳ Ajouter la documentation JSDoc dans le code
+3. ⏳ Générer la documentation dans /docs
+4. ⏳ Configurer le script `npm test`
+
+**À faire ensuite (Phases 6-7) :**
+- Front-end (Dashboard, formulaires CRUD, authentification)
+- Déploiement en production (Heroku, Render, etc.)
+
+---
+
+## 🎯 Ce que vous avez appris (Points clés)
+
+**Architecture MVC :**
+- Séparation Modèle / Service / Controller / Routes
+- Services = logique métier (pas de HTTP)
+- Controllers = gestion HTTP (req, res, codes)
+- Middlewares = authentification, logs, etc.
+
+**Sécurité :**
+- Hashage des passwords avec bcrypt
+- Tokens JWT pour l'authentification
+- Protection des routes avec middleware
+- Suppression des passwords dans les réponses
+
+**Base de données MongoDB :**
+- Mongoose (ODM) pour modéliser les données
+- Méthodes : find, findById, findByIdAndUpdate, findOne, save
+- Types : String, Number, Date, enum
+- Validations : required, unique, lowercase, trim
+
+**API REST :**
+- Méthodes HTTP : GET, POST, PUT, PATCH, DELETE
+- Codes HTTP : 200, 201, 404, 401, 500
+- Routes : /api/ressource/:id
+- Sous-ressources : /api/catways/:id/reservations
+
+**Async/await :**
+- Utilisation systématique avec MongoDB
+- Gestion des erreurs avec try/catch
+- throw error pour propager les erreurs
+
+**BON COURAGE POUR LA SUITE ! Vous êtes à 60% du projet ! 🚀**
 
 ---
 
