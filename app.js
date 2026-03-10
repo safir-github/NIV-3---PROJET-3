@@ -2,6 +2,7 @@ require('dotenv').config(); // Charge les variables du .env
 const express = require('express');
 const connectDB = require('./config/db');
 const userRoutes = require('./routes/userRoutes')
+const catwayRoutes = require('./routes/catwayRoutes');
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.get('/', (req, res) => {
 
 // Routes de l'API
 app.use('/api', userRoutes);
+app.use('/api', catwayRoutes);
 
 // Démarrage du serveur
 const PORT = process.env.PORT || 3000;
