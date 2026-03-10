@@ -114,3 +114,160 @@
       color: #721c24;
       border: 1px solid #f5c6cb;
   }
+
+
+
+
+  /* ============================================
+     CONTAINER : Conteneur principal
+     ============================================ */
+  .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+  }
+
+  /* ============================================
+     HEADER : En-tête du dashboard
+     ============================================ */
+  header {
+      background: #2c3e50;
+      color: white;
+      padding: 20px 0;
+      margin-bottom: 30px;
+  }
+
+  header h1 {
+      font-size: 28px;
+  }
+
+  .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+  }
+
+  .logout-btn {
+      background: #e74c3c;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+  }
+
+  .logout-btn:hover {
+      background: #c0392b;
+  }
+
+  /* ============================================
+     NAVIGATION : Menu du dashboard
+     ============================================ */
+  nav ul {
+      list-style: none;
+      display: flex;
+      gap: 10px;
+      margin-bottom: 30px;
+  }
+
+  nav li {
+      flex: 1;
+  }
+
+  nav button {
+      width: 100%;
+      padding: 15px;
+      background: #3498db;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+  }
+
+  nav button:hover {
+      background: #2980b9;
+  }
+
+  nav button.active {
+      background: #1abc9c;
+  }
+
+  /* ============================================
+     SECTIONS : Différentes sections du dashboard
+     ============================================ */
+  .section {
+      display: none;
+      /* Cachées par défaut */
+  }
+
+  .section.active {
+      display: block;
+      /* Visible si classe active */
+  }
+
+  .section h2 {
+      margin-bottom: 20px;
+      color: #2c3e50;
+      border-bottom: 3px solid #3498db;
+      padding-bottom: 10px;
+  }
+
+  /* Boutons supplémentaires */
+  .btn-success {
+      background: #27ae60;
+      color: white;
+  }
+
+  .btn-success:hover {
+      background: #229954;
+  }
+
+  .btn-danger {
+      background: #e74c3c;
+      color: white;
+  }
+
+  .btn-danger:hover {
+      background: #c0392b;
+  }
+
+  .actions {
+      display: flex;
+      gap: 5px;
+  }
+
+  .actions button {
+      padding: 5px 10px;
+      font-size: 12px;
+  }
+
+  /* Tableaux pour afficher les données */
+  table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: white;
+      border-radius: 5px;
+      overflow: hidden;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+
+  table th {
+      background: #34495e;
+      color: white;
+      padding: 12px;
+      text-align: left;
+      font-weight: bold;
+  }
+
+  table td {
+      padding: 12px;
+      border-bottom: 1px solid #ecf0f1;
+  }
+
+  table tr:hover {
+      background: #f8f9fa;
+  }
