@@ -249,3 +249,127 @@ async function populateCatwaySelect() {
         select.innerHTML = '<option value="">-- Choisir un catway --</option>' + options;
     }
 }
+
+
+
+
+
+
+// ============================================
+// FONCTIONS DE GESTION DES MODALES
+// ============================================
+
+/**
+ * Ouvre une modale
+ * @param {string} modalId - L'ID de la modale à ouvrir
+ */
+function openModal(modalId) {
+    document.getElementById(modalId).classList.add('active');
+}
+
+/**
+ * Ferme une modale
+ * @param {string} modalId - L'ID de la modale à fermer
+ */
+function closeModal(modalId) {
+    document.getElementById(modalId).classList.remove('active');
+}
+
+/**
+ * Ferme toutes les modales (utile pour la gestion des clics extérieurs)
+ */
+function closeAllModals() {
+    document.querySelectorAll('.modal').forEach(modal => {
+        modal.classList.remove('active');
+    });
+}
+
+// ============================================
+// FONCTIONS D'AJOUT (CRUD - CREATE)
+// ============================================
+
+/**
+ * Crée un nouvel utilisateur
+ */
+async function addUser() {
+    const name = document.getElementById('userName').value;
+    const email = document.getElementById('userEmail').value;
+    const password = document.getElementById('userPassword').value;
+
+    const result = await createUser({ name, email, password });
+
+    if (result.ok) {
+        showMessage('Utilisateur créé avec succès', 'success');
+        closeModal('userModal');
+        loadUsers(); // Recharger la liste
+        // Vider le formulaire
+        document.getElementById('userName').value = '';
+        document.getElementById('userEmail').value = '';
+        document.getElementById('userPassword').value = '';
+    } else {
+        showMessage(result.data.error || 'Erreur lors de la création', 'error');
+    }
+}
+
+/**
+ * Crée un nouveau catway
+ */
+async function addCatway() {
+    const catwayNumber = parseInt(document.getElementById('catwayNumber').value);
+    const type = document.getElementById('catwayType').value;
+    const catwayState = document.getElementById('catwayState').value;
+
+    const result = await createCatway({ catwayNumber, type, catwayState });
+
+    if (result.ok) {
+        showMessage('Catway créé avec succès', 'success');
+        closeModal('catwayModal');
+        loadCatways(); // Recharger la liste
+        populateCatwaySelect(); // Mettre à jour le dropdown
+        // Vider le formulaire
+        document.getElementById('catwayNumber').value = '';
+        document.getElementById('catwayType').value = '';
+        document.getElementById('catwayState').value = '';
+    } else {
+        showMessage(result.data.error || 'Erreur lors de la création', 'error');
+    }
+}
+
+/**
+ * Crée une nouvelle réservation
+ */
+async function addReservation() {
+    const catwayNumber = parseInt(document.getElementById('resCatway').value);
+    const clientName = document.getElementById('resClient').value;
+    const boatName = document.getElementById('resBoat').value;
+    const checkIn = document.getElementById('resCheckIn').value;
+    const checkOut = document.getElementById('resCheckOut').value;
+
+    const result = await createReservation(catwayNumber, {
+        clientName,
+        boatName,
+        checkIn: new Date(checkIn),
+        checkOut: new Date(checkOut)
+    });
+
+    if (result.ok) {
+        showMessage('Réservation créée avec succès', 'success');
+        closeModal('reservationModal');
+
+        // Sélectionner automatiquement le catway dans le dropdown et charger les réservations
+        const select = document.getElementById('reservationCatwaySelect');
+        if (select) {
+            select.value = catwayNumber.toString();
+            await loadReservations();
+        }
+
+        // Vider le formulaire
+        document.getElementById('resCatway').value = '';
+        document.getElementById('resClient').value = '';
+        document.getElementById('resBoat').value = '';
+        document.getElementById('resCheckIn').value = '';
+        document.getElementById('resCheckOut').value = '';
+    } else {
+        showMessage(result.data.error || 'Erreur lors de la création', 'error');
+    }
+}

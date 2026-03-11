@@ -80,3 +80,11 @@ async function deleteUser(id) {
 async function getReservationsByCatway(catwayNumber) {
     return await apiCall(`/api/catways/${catwayNumber}/reservations`);
 }
+
+
+async function createReservation(catwayNumber, reservationData) {
+    return await apiCall(`/api/catways/${catwayNumber}/reservations`, {
+        method: 'POST',
+        body: JSON.stringify(reservationData)
+    });
+}
