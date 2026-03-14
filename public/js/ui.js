@@ -40,48 +40,50 @@ function showMessage(message, type = 'info') {
 /**
  * Affiche les catways dans un tableau
  */
-function displayCatways(catways) {
-    const tbody = document.getElementById('catwaysTableBody');
-    if (!tbody) return;
+async function displayCatways() {
+    const result = await getAllCatways();
+    const tbody = document.querySelector('#catways tbody');
 
-    if (catways.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="4" style="text-align: center;">Aucun catway trouvé</td></tr>';
-        return;
+    if (result.ok && result.data && result.data.length > 0) {
+        tbody.innerHTML = result.data.map(catway => `
+              <tr>
+                  <td>${catway.catwayNumber}</td>
+                  <td>${catway.type}</td>
+                  <td>${catway.catwayState}</td>
+                  <td>
+                      <button onclick="openEditCatwayModal('${catway._id}', ${catway.catwayNumber}, '${catway.catwayState}')" class="btn
+  btn-warning" style="margin-right: 5px;">✏️  Modifier</button>
+                      <button onclick="confirmDeleteCatway('${catway._id}')" class="btn btn-danger">🗑️  Supprimer</button>
+                  </td>
+              </tr>
+          `).join('');
+    } else {
+        tbody.innerHTML = '<tr><td colspan="4">Aucun catway trouvé</td></tr>';
     }
-
-    tbody.innerHTML = catways.map(catway => `
-          <tr>
-              <td>${catway.catwayNumber}</td>
-              <td>${catway.type}</td>
-              <td>${catway.catwayState}</td>
-              <td class="actions">
-                  <button class="btn btn-danger" onclick="confirmDeleteCatway('${catway._id}')">Supprimer</button>
-              </td>
-          </tr>
-      `).join('');
 }
 
 /**
  * Affiche les utilisateurs dans un tableau
  */
-function displayUsers(users) {
-    const tbody = document.getElementById('usersTableBody');
-    if (!tbody) return;
+async function displayUsers() {
+    const result = await getAllUsers();
+    const tbody = document.querySelector('#users tbody');
 
-    if (users.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="3" style="text-align: center;">Aucun utilisateur trouvé</td></tr>';
-        return;
+    if (result.ok && result.data && result.data.length > 0) {
+        tbody.innerHTML = result.data.map(user => `
+              <tr>
+                  <td>${user.name}</td>
+                  <td>${user.email}</td>
+                  <td>
+                      <button onclick="openEditUserModal('${user._id}', '${user.name}', '${user.email}')" class="btn btn-warning"
+  style="margin-right: 5px;">✏️  Modifier</button>
+                      <button onclick="confirmDeleteUser('${user._id}')" class="btn btn-danger">🗑️  Supprimer</button>
+                  </td>
+              </tr>
+          `).join('');
+    } else {
+        tbody.innerHTML = '<tr><td colspan="3">Aucun utilisateur trouvé</td></tr>';
     }
-
-    tbody.innerHTML = users.map(user => `
-          <tr>
-              <td>${user.name}</td>
-              <td>${user.email}</td>
-              <td class="actions">
-                  <button class="btn btn-danger" onclick="confirmDeleteUser('${user._id}')">Supprimer</button>
-              </td>
-          </tr>
-      `).join('');
 }
 
 /**
@@ -371,5 +373,86 @@ async function addReservation() {
         document.getElementById('resCheckOut').value = '';
     } else {
         showMessage(result.data.error || 'Erreur lors de la création', 'error');
+    }
+}
+
+
+
+
+
+
+// ============================================
+// FONCTIONS DE MODIFICATION (CRUD - UPDATE)
+// ============================================
+
+/**
+ * Ouvre la modale de modification d'utilisateur avec les données pré-remplies
+ * @param {string} userId - L'ID de l'utilisateur
+ * @param {string} userName - Le nom de l'utilisateur
+ * @param {string} userEmail - L'email de l'utilisateur
+ */
+function openEditUserModal(userId, userName, userEmail) {
+    document.getElementById('editUserId').value = userId;
+    document.getElementById('editUserName').value = userName;
+    document.getElementById('editUserEmail').value = userEmail;
+    document.getElementById('editUserPassword').value = '';
+    openModal('editUserModal');
+}
+
+/**
+ * Ouvre la modale de modification de l'état d'un catway
+ * @param {string} catwayId - L'ID du catway
+ * @param {number} catwayNumber - Le numéro du catway
+ * @param {string} currentState - L'état actuel du catway
+ */
+function openEditCatwayModal(catwayId, catwayNumber, currentState) {
+    document.getElementById('editCatwayId').value = catwayId;
+    document.getElementById('editCatwayNumber').value = catwayNumber;
+    document.getElementById('editCatwayNumberDisplay').value = catwayNumber;
+    document.getElementById('editCatwayState').value = currentState;
+    openModal('editCatwayModal');
+}
+
+/**
+ * Met à jour un utilisateur
+ */
+async function updateUser() {
+    const userId = document.getElementById('editUserId').value;
+    const name = document.getElementById('editUserName').value;
+    const email = document.getElementById('editUserEmail').value;
+    const password = document.getElementById('editUserPassword').value;
+
+    // Préparer les données à mettre à jour
+    const updateData = { name, email };
+    if (password) {
+        updateData.password = password;
+    }
+
+    const result = await updateUserById(userId, updateData);
+
+    if (result.ok) {
+        showMessage('Utilisateur mis à jour avec succès', 'success');
+        closeModal('editUserModal');
+        loadUsers(); // Recharger la liste
+    } else {
+        showMessage(result.data.error || 'Erreur lors de la mise à jour', 'error');
+    }
+}
+
+/**
+ * Met à jour l'état d'un catway
+ */
+async function updateCatwayState() {
+    const catwayId = document.getElementById('editCatwayId').value;
+    const catwayState = document.getElementById('editCatwayState').value;
+
+    const result = await updateCatwayById(catwayId, { catwayState });
+
+    if (result.ok) {
+        showMessage('État du catway mis à jour avec succès', 'success');
+        closeModal('editCatwayModal');
+        loadCatways(); // Recharger la liste
+    } else {
+        showMessage(result.data.error || 'Erreur lors de la mise à jour', 'error');
     }
 }

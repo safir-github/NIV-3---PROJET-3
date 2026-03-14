@@ -88,3 +88,19 @@ async function createReservation(catwayNumber, reservationData) {
         body: JSON.stringify(reservationData)
     });
 }
+
+
+
+async function updateUserById(userId, userData) {
+    return await apiCall(`/api/users/${userId}`, {
+        method: 'PUT',
+        body: JSON.stringify(userData)
+    });
+}
+
+async function updateCatwayById(catwayId, catwayData) {
+    return await apiCall(`/api/catways/${catwayId}`, {
+        method: 'PUT',
+        body: JSON.stringify(catwayData)
+    });
+}
