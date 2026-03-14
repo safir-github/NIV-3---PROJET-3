@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Documentation API - Port de Plaisance Russell</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana,
+                sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+
+        .doc-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+
+        .doc-section {
+            background: white;
+            margin-bottom: 30px;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .doc-section h2 {
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        .doc-section h3 {
+            color: #34495e;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .doc-section h4 {
+            color: #7f8c8d;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .doc-nav {
+            background: #2c3e50;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .doc-nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .doc-nav a:hover {
+            color: #3498db;
+        }
+
+        .endpoint {
+            background: #f8f9fa;
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 4px solid #3498db;
+            border-radius: 4px;
+        }
+
+        .method {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-weight: bold;
+            margin-right: 10px;
+            color: white !important;
+        }
+
+        .get {
+            background: #61affe;
+        }
+
+        .post {
+            background: #49cc90;
+        }
+
+        .put {
+            background: #fca130;
+        }
+
+        .delete {
+            background: #f93e3e;
+        }
+
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', Courier, monospace;
+            color: #e74c3c;
+            font-size: 0.9em;
+        }
+
+        pre {
+            background: #2c3e50 !important;
+            color: #ecf0f1 !important;
+            padding: 20px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9em;
+            line-height: 1.5;
+        }
+
+        pre code {
+            background: transparent !important;
+            color: #ecf0f1 !important;
+            padding: 0;
+        }
+
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 12px 24px;
+            background: #2c3e50;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+
+        .back-btn:hover {
+            background: #34495e;
+            color: white;
+        }
+
+        p {
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+
+        dl dt {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-top: 15px;
+        }
+
+        dl dd {
+            margin-left: 20px;
+            margin-bottom: 10px;
+            color: #555;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="doc-container">
+        <a href="index.html" class="back-btn">← Retour à l'accueil</a>
+        <h1>📘 Documentation API - Port de Plaisance Russell</h1>
+
+        <!-- Navigation -->
+        <nav class="doc-nav">
+            <a href="#overview">📊 Vue d'ensemble</a>
+            <a href="#tutorial">🎓 Tutoriel</a>
+            <a href="#examples">💡 Exemples</a>
+            <a href="#glossary">📖 Glossaire</a>
+        </nav>
+
+        <!-- SECTION 1: VUE D'ENSEMBLE -->
+        <section id="overview" class="doc-section">
+            <h2>📊 Vue d'ensemble</h2>
+
+            <h3>Qu'est-ce que l'API du Port de Plaisance Russell ?</h3>
+            <p>
+                L'API du Port de Plaisance Russell est une interface RESTful privée qui permet aux administrateurs
+                de gérer les catways (emplacements d'amarrage) et les réservations du port. Cette API facilite
+                la gestion quotidienne de la capitainerie en offrant des fonctionnalités complètes de création,
+                consultation, modification et suppression des données.
+            </p>
+
+            <h3>Base URL</h3>
+            <pre><code>http://localhost:3000/api</code></pre>
+
+            <h3>Authentification</h3>
+            <p>
+                Toutes les requêtes doivent inclure un token JWT dans le header <code>Authorization</code> :
+            </p>
+            <pre><code>Authorization: Bearer VOTRE_TOKEN_JWT</code></pre>
+
+            <h3>Routes principales</h3>
+
+            <h4>Catways</h4>
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <code>/catways</code> - Lister tous les catways
+            </div>
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <code>/catways/:id</code> - Récupérer un catway
+            </div>
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <code>/catways</code> - Créer un catway
+            </div>
+            <div class="endpoint">
+                <span class="method put">PUT</span>
+                <code>/catways/:id</code> - Modifier un catway
+            </div>
+            <div class="endpoint">
+                <span class="method delete">DELETE</span>
+                <code>/catways/:id</code> - Supprimer un catway
+            </div>
+
+            <h4>Réservations</h4>
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <code>/catways/:catwayNumber/reservations</code> - Lister les réservations d'un catway
+            </div>
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <code>/catways/:catwayNumber/reservations</code> - Créer une réservation
+            </div>
+            <div class="endpoint">
+                <span class="method delete">DELETE</span>
+                <code>/reservations/:id</code> - Supprimer une réservation
+            </div>
+        </section>
+
+        <!-- SECTION 2: TUTORIEL -->
+        <section id="tutorial" class="doc-section">
+            <h2>🎓 Tutoriel</h2>
+
+            <h3>Étape 1 : Obtenir un token d'authentification</h3>
+            <p>Avant d'utiliser l'API, vous devez vous connecter pour obtenir un token JWT :</p>
+            <pre><code>POST /api/login
+  Content-Type: application/json
+
+  {
+    "email": "votre@email.com",
+    "password": "votre_mot_de_passe"
+  }</code></pre>
+
+            <h3>Étape 2 : Lister tous les catways</h3>
+            <p>Une fois authentifié, vous pouvez lister tous les catways disponibles :</p>
+            <pre><code>GET /api/catways
+  Authorization: Bearer VOTRE_TOKEN_JWT</code></pre>
+
+            <h3>Étape 3 : Créer un nouveau catway</h3>
+            <p>Pour ajouter un catway, envoyez une requête POST avec les données requises :</p>
+            <pre><code>POST /api/catways
+  Authorization: Bearer VOTRE_TOKEN_JWT
+  Content-Type: application/json
+
+  {
+    "catwayNumber": 10,
+    "type": "long",
+    "catwayState": "Disponible"
+  }</code></pre>
+
+            <h3>Étape 4 : Créer une réservation</h3>
+            <p>Pour réserver un catway, utilisez son numéro :</p>
+            <pre><code>POST /api/catways/1/reservations
+  Authorization: Bearer VOTRE_TOKEN_JWT
+  Content-Type: application/json
+
+  {
+    "clientName": "Jean Dupont",
+    "boatName": "Mon Bateau",
+    "checkIn": "2025-06-15T10:00:00Z",
+    "checkOut": "2025-06-20T10:00:00Z"
+  }</code></pre>
+        </section>
+
+        <!-- SECTION 3: EXEMPLES -->
+        <section id="examples" class="doc-section">
+            <h2>💡 Exemples</h2>
+
+            <h3>Exemple 1 : Récupérer un catway spécifique</h3>
+            <p><strong>Requête :</strong></p>
+            <pre><code>GET /api/catways/69b07bb69a3f480b11b25ef0 HTTP/1.1
+  Host: localhost:3000
+  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</code></pre>
+
+            <p><strong>Réponse :</strong></p>
+            <pre><code>{
+    "_id": "69b07bb69a3f480b11b25ef0",
+    "catwayNumber": 1,
+    "type": "long",
+    "catwayState": "En bon état, réparations récentes",
+    "__v": 0
+  }</code></pre>
+
+            <h3>Exemple 2 : Modifier l'état d'un catway</h3>
+            <p><strong>Requête :</strong></p>
+            <pre><code>PUT /api/catways/69b07bb69a3f480b11b25ef0 HTTP/1.1
+  Host: localhost:3000
+  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+  Content-Type: application/json
+
+  {
+    "catwayNumber": 1,
+    "type": "long",
+    "catwayState": "En maintenance"
+  }</code></pre>
+
+            <h3>Exemple 3 : Lister les réservations d'un catway</h3>
+            <p><strong>Requête :</strong></p>
+            <pre><code>GET /api/catways/1/reservations HTTP/1.1
+  Host: localhost:3000
+  Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...</code></pre>
+
+            <p><strong>Réponse :</strong></p>
+            <pre><code>[
+    {
+      "_id": "69b09d5a...",
+      "catwayNumber": 1,
+      "clientName": "Pierre Dupont",
+      "boatName": "L'Aigle des Mers",
+      "checkIn": "2024-06-15T00:00:00.000Z",
+      "checkOut": "2024-06-22T00:00:00.000Z",
+      "__v": 0
+    }
+  ]</code></pre>
+        </section>
+
+        <!-- SECTION 4: GLOSSAIRE -->
+        <section id="glossary" class="doc-section">
+            <h2>📖 Glossaire</h2>
+
+            <h3>Définitions</h3>
+            <dl>
+                <dt><strong>Catway</strong></dt>
+                <dd>Emplacement d'amarrage pour un bateau, aussi appelé ponton ou place de port. Chaque catway est
+                    identifié
+                    par un numéro unique.</dd>
+
+                <dt><strong>JWT (JSON Web Token)</strong></dt>
+                <dd>Token d'authentification sécurisé utilisé pour vérifier l'identité de l'utilisateur à chaque
+                    requête. Le
+                    token est généré lors de la connexion et doit être inclus dans le header Authorization.</dd>
+
+                <dt><strong>Réservation</strong></dt>
+                <dd>Enregistrement d'une occupation temporaire d'un catway par un client. Une réservation inclut le nom
+                    du
+                    client, le nom du bateau, et les dates d'arrivée et de départ.</dd>
+
+                <dt><strong>REST (Representational State Transfer)</strong></dt>
+                <dd>Style d'architecture pour les systèmes distribués. L'API respecte les principes REST en utilisant
+                    les
+                    méthodes HTTP standards (GET, POST, PUT, DELETE) pour effectuer des opérations sur les ressources.
+                </dd>
+
+                <dt><strong>MongoDB</strong></dt>
+                <dd>Système de base de données NoSQL orienté documents, utilisé pour stocker toutes les données de
+                    l'application (catways, réservations, utilisateurs).</dd>
+
+                <dt><strong>Middleware</strong></dt>
+                <dd>Fonction intermédiaire qui traite les requêtes HTTP avant qu'elles n'atteignent les routes finales.
+                    Dans
+                    cette API, le middleware d'authentification vérifie la validité du token JWT.</dd>
+
+                <dt><strong>Type de catway</strong></dt>
+                <dd>Catégorisation du catway selon sa taille : <code>long</code> pour les grands bateaux ou
+                    <code>short</code>
+                    pour les petits bateaux.
+                </dd>
+
+                <dt><strong>État du catway (catwayState)</strong></dt>
+                <dd>Description de l'état actuel du catway : "Disponible", "Occupé", "En maintenance", "En bon état",
+                    etc.</dd>
+            </dl>
+        </section>
+    </div>
+</body>
+
+</html>
