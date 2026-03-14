@@ -104,3 +104,17 @@ async function updateCatwayById(catwayId, catwayData) {
         body: JSON.stringify(catwayData)
     });
 }
+
+
+
+async function getCatwayById(catwayId) {
+    return await apiCall(`/api/catways/${catwayId}`);
+}
+
+async function getUserById(userId) {
+    return await apiCall(`/api/users/${userId}`);
+}
+
+async function getReservationById(reservationId) {
+    return await apiCall(`/api/reservations/${reservationId}`);
+}
