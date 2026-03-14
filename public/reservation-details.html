@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,
+  initial-scale=1.0">
+    <title>Détails de la Réservation - Port de Plaisance
+        Russell</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            margin: 0 0 15px 0;
+            font-size: 2em;
+        }
+
+        header nav {
+            margin-top: 10px;
+        }
+
+        header nav a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            transition: background 0.3s;
+            display: inline-block;
+        }
+
+        header nav a:hover {
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+        }
+
+        header p {
+            margin: 10px 0 0 0;
+            opacity: 0.9;
+        }
+
+        #userInfo {
+            font-weight: bold;
+            color: #ffd700;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>🔍 Détails de la Réservation</h1>
+            <nav>
+                <a href="reservations.html">← Retour à la
+                    liste des réservations</a> |
+                <a href="dashboard.html">Dashboard</a> |
+                <a href="index.html">Déconnexion</a>
+            </nav>
+        </header>
+
+        <main>
+            <section id="reservationDetails">
+                <p>Chargement des détails...</p>
+            </section>
+        </main>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/reservation-details-page.js"></script>
+</body>
+
+</html>
