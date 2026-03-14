@@ -51,9 +51,12 @@ async function displayCatways() {
                   <td>${catway.type}</td>
                   <td>${catway.catwayState}</td>
                   <td>
-                      <button onclick="openEditCatwayModal('${catway._id}', ${catway.catwayNumber}, '${catway.catwayState}')" class="btn
-  btn-warning" style="margin-right: 5px;">✏️  Modifier</button>
-                      <button onclick="confirmDeleteCatway('${catway._id}')" class="btn btn-danger">🗑️  Supprimer</button>
+                      <button onclick="viewCatwayDetails('${catway._id}')" class="btn btn-info"
+  style="margin-right: 5px;">🔍 Voir</button>
+                      <button onclick="openEditCatwayModal('${catway._id}', ${catway.catwayNumber},
+  '${catway.catwayState}')" class="btn btn-warning" style="margin-right: 5px;">✏️  Modifier</button>
+                      <button onclick="confirmDeleteCatway('${catway._id}')" class="btn btn-danger">
+   Supprimer</button>
                   </td>
               </tr>
           `).join('');
@@ -75,9 +78,12 @@ async function displayUsers() {
                   <td>${user.name}</td>
                   <td>${user.email}</td>
                   <td>
-                      <button onclick="openEditUserModal('${user._id}', '${user.name}', '${user.email}')" class="btn btn-warning"
-  style="margin-right: 5px;">✏️  Modifier</button>
-                      <button onclick="confirmDeleteUser('${user._id}')" class="btn btn-danger">🗑️  Supprimer</button>
+                      <button onclick="viewUserDetails('${user._id}')" class="btn btn-info"
+  style="margin-right: 5px;">🔍 Voir</button>
+                      <button onclick="openEditUserModal('${user._id}', '${user.name}',
+  '${user.email}')" class="btn btn-warning" style="margin-right: 5px;">✏️  Modifier</button>
+                      <button onclick="confirmDeleteUser('${user._id}')" class="btn btn-danger">🗑️
+  Supprimer</button>
                   </td>
               </tr>
           `).join('');
@@ -89,27 +95,28 @@ async function displayUsers() {
 /**
  * Affiche les réservations dans un tableau
  */
-function displayReservations(reservations) {
-    const tbody = document.getElementById('reservationsTableBody');
-    if (!tbody) return;
+async function displayReservations(reservations) {
+    const tbody = document.querySelector('#reservations tbody');
 
-    if (reservations.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">Aucune réservation pour ce catway</td></tr>';
-        return;
+    if (reservations && reservations.length > 0) {
+        tbody.innerHTML = reservations.map(reservation => `
+              <tr>
+                  <td>${reservation.catwayNumber}</td>
+                  <td>${reservation.clientName}</td>
+                  <td>${reservation.boatName}</td>
+                  <td>${new Date(reservation.checkIn).toLocaleDateString('fr-FR')}</td>
+                  <td>${new Date(reservation.checkOut).toLocaleDateString('fr-FR')}</td>
+                  <td>
+                      <button onclick="viewReservationDetails('${reservation._id}')" class="btn
+  btn-info" style="margin-right: 5px;">🔍 Voir</button>
+                      <button onclick="confirmDeleteReservation('${reservation._id}')" class="btn
+  btn-danger">🗑️  Supprimer</button>
+                  </td>
+              </tr>
+          `).join('');
+    } else {
+        tbody.innerHTML = '<tr><td colspan="6">Aucune réservation trouvée pour ce catway</td></tr>';
     }
-
-    tbody.innerHTML = reservations.map(reservation => `
-          <tr>
-              <td>${reservation.catwayNumber}</td>
-              <td>${reservation.clientName}</td>
-              <td>${reservation.boatName}</td>
-              <td>${new Date(reservation.checkIn).toLocaleDateString('fr-FR')}</td>
-              <td>${new Date(reservation.checkOut).toLocaleDateString('fr-FR')}</td>
-              <td class="actions">
-                  <button class="btn btn-danger" onclick="confirmDeleteReservation('${reservation._id}')">Supprimer</button>
-              </td>
-          </tr>
-      `).join('');
 }
 
 // ============================================
@@ -454,5 +461,72 @@ async function updateCatwayState() {
         loadCatways(); // Recharger la liste
     } else {
         showMessage(result.data.error || 'Erreur lors de la mise à jour', 'error');
+    }
+}
+
+
+
+
+
+// ============================================
+// FONCTIONS DE VISUALISATION DES DÉTAILS
+// ============================================
+
+/**
+ * Affiche les détails d'un catway
+ */
+async function viewCatwayDetails(catwayId) {
+    const result = await getCatwayById(catwayId);
+
+    if (result.ok && result.data) {
+        const catway = result.data;
+        document.getElementById('detailCatwayNumber').value = catway.catwayNumber;
+        document.getElementById('detailCatwayType').value = catway.type;
+        document.getElementById('detailCatwayState').value = catway.catwayState;
+        document.getElementById('detailCatwayId').value = catway._id;
+        openModal('catwayDetailsModal');
+    } else {
+        showMessage('Erreur lors du chargement des détails', 'error');
+    }
+}
+
+/**
+ * Affiche les détails d'un utilisateur
+ */
+async function viewUserDetails(userId) {
+    const result = await getUserById(userId);
+
+    if (result.ok && result.data) {
+        const user = result.data;
+        document.getElementById('detailUserName').value = user.name;
+        document.getElementById('detailUserEmail').value = user.email;
+        document.getElementById('detailUserId').value = user._id;
+        document.getElementById('detailUserCreatedAt').value = user.createdAt ? new
+            Date(user.createdAt).toLocaleDateString('fr-FR') : 'N/A';
+        openModal('userDetailsModal');
+    } else {
+        showMessage('Erreur lors du chargement des détails', 'error');
+    }
+}
+
+/**
+ * Affiche les détails d'une réservation
+ */
+async function viewReservationDetails(reservationId) {
+    const result = await getReservationById(reservationId);
+
+    if (result.ok && result.data) {
+        const reservation = result.data;
+        document.getElementById('detailReservationCatway').value = reservation.catwayNumber;
+        document.getElementById('detailReservationClient').value = reservation.clientName;
+        document.getElementById('detailReservationBoat').value = reservation.boatName;
+        document.getElementById('detailReservationCheckIn').value = new
+            Date(reservation.checkIn).toLocaleDateString('fr-FR');
+        document.getElementById('detailReservationCheckOut').value = new
+            Date(reservation.checkOut).toLocaleDateString('fr-FR');
+        document.getElementById('detailReservationId').value = reservation._id;
+        openModal('reservationDetailsModal');
+    } else {
+        showMessage('Erreur lors du chargement des détails', 'error');
     }
 }
