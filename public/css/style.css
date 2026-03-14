@@ -329,3 +329,16 @@
   .close-modal:hover {
       color: #333;
   }
+
+
+
+
+
+  .btn-warning {
+      background-color: #ffc107;
+      color: #212529;
+  }
+
+  .btn-warning:hover {
+      background-color: #e0a800;
+  }

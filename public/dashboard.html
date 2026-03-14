@@ -51,6 +51,8 @@
                         <th>Type</th>
                         <th>État</th>
                         <th>Actions</th>
+                        <th>Modifier</th>
+
                     </tr>
                 </thead>
                 <tbody id="catwaysTableBody"></tbody>
@@ -192,6 +194,63 @@
                     <input type="date" id="resCheckOut" required>
                 </div>
                 <button type="submit" class="btn btn-success">Créer la réservation</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODALE MODIFIER UN UTILISATEUR -->
+    <div id="editUserModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Modifier un Utilisateur</h3>
+                <button class="close-modal" onclick="closeModal('editUserModal')">&times;</button>
+            </div>
+            <form onsubmit="event.preventDefault(); updateUser();">
+                <input type="hidden" id="editUserId">
+                <div class="form-group">
+                    <label for="editUserName">Nom complet</label>
+                    <input type="text" id="editUserName" required>
+                </div>
+                <div class="form-group">
+                    <label for="editUserEmail">Email</label>
+                    <input type="email" id="editUserEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="editUserPassword">Nouveau mot de passe (optionnel)</label>
+                    <input type="password" id="editUserPassword" placeholder="Laisser vide pour ne pas changer">
+                </div>
+                <button type="submit" class="btn btn-warning">Mettre à jour</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODALE MODIFIER L'ÉTAT D'UN CATWAY -->
+    <div id="editCatwayModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Modifier l'état du Catway</h3>
+                <button class="close-modal" onclick="closeModal('editCatwayModal')">&times;</button>
+            </div>
+            <form onsubmit="event.preventDefault(); updateCatwayState();">
+                <input type="hidden" id="editCatwayId">
+                <input type="hidden" id="editCatwayNumber">
+                <div class="form-group">
+                    <label>Numéro du catway</label>
+                    <input type="text" id="editCatwayNumberDisplay" readonly style="background: #f0f0f0;">
+                </div>
+                <div class="form-group">
+                    <label for="editCatwayState">Nouvel état</label>
+                    <select id="editCatwayState" required>
+                        <option value="">-- Choisir l'état --</option>
+                        <option value="Disponible">Disponible</option>
+                        <option value="Occupé">Occupé</option>
+                        <option value="En maintenance">En maintenance</option>
+                        <option value="En bon état">En bon état</option>
+                        <option value="Indisponible">Indisponible</option>
+                        <option value="Satisfaisant">Satisfaisant</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-warning">Mettre à jour l'état</button>
             </form>
         </div>
     </div>
