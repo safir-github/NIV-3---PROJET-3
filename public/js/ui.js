@@ -530,3 +530,70 @@ async function viewReservationDetails(reservationId) {
         showMessage('Erreur lors du chargement des détails', 'error');
     }
 }
+
+
+
+
+
+/**
+ * Affiche les détails d'un catway par ID (formulaire de recherche)
+ */
+async function showCatwayById() {
+    const catwayId = document.getElementById('searchCatwayId').value;
+
+    if (!catwayId) {
+        showMessage('Veuillez entrer un ID', 'error');
+        return;
+    }
+
+    const result = await getCatwayById(catwayId);
+
+    if (result.ok && result.data) {
+        // Afficher dans une modale
+        const catway = result.data;
+        document.getElementById('detailCatwayNumber').value = catway.catwayNumber;
+        document.getElementById('detailCatwayType').value = catway.type;
+        document.getElementById('detailCatwayState').value = catway.catwayState;
+        document.getElementById('detailCatwayId').value = catway._id;
+
+        openModal('catwayDetailsModal');
+
+        // Vider le champ
+        document.getElementById('searchCatwayId').value = '';
+    } else {
+        showMessage('Catway non trouvé', 'error');
+    }
+}
+
+/**
+ * Affiche les détails d'une réservation par ID (formulaire de recherche)
+ */
+async function showReservationById() {
+    const reservationId = document.getElementById('searchReservationId').value;
+
+    if (!reservationId) {
+        showMessage('Veuillez entrer un ID', 'error');
+        return;
+    }
+
+    const result = await getReservationById(reservationId);
+
+    if (result.ok && result.data) {
+        // Afficher dans une modale
+        const reservation = result.data;
+        document.getElementById('detailReservationCatway').value = reservation.catwayNumber;
+        document.getElementById('detailReservationClient').value = reservation.clientName;
+        document.getElementById('detailReservationBoat').value = reservation.boatName;
+        document.getElementById('detailReservationCheckIn').value = new Date(reservation.checkIn).toLocaleDateString('fr-FR');
+        document.getElementById('detailReservationCheckOut').value = new
+            Date(reservation.checkOut).toLocaleDateString('fr-FR');
+        document.getElementById('detailReservationId').value = reservation._id;
+
+        openModal('reservationDetailsModal');
+
+        // Vider le champ
+        document.getElementById('searchReservationId').value = '';
+    } else {
+        showMessage('Réservation non trouvée', 'error');
+    }
+}

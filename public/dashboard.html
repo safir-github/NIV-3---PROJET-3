@@ -47,6 +47,39 @@
                         réservations</a>
                 </div>
             </div>
+
+
+            <div style="margin-top: 30px;">
+                <h3>Recherche par ID</h3>
+                <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+
+                    <!-- Formulaire pour afficher un catway par ID -->
+                    <div style="flex: 1; min-width: 300px; background: #f8f9fa; padding: 15px; border-radius: 8px;">
+                        <h4 style="margin: 0 0 10px 0;">Afficher un Catway par ID</h4>
+                        <form onsubmit="event.preventDefault(); showCatwayById();">
+                            <div class="form-group">
+                                <input type="text" id="searchCatwayId" placeholder="Entrez l'ID du catway" required
+                                    style="width: 100%;
+  padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="margin-top: 10px;">Afficher</button>
+                        </form>
+                    </div>
+
+                    <!-- Formulaire pour afficher une réservation par ID -->
+                    <div style="flex: 1; min-width: 300px; background: #f8f9fa; padding: 15px; border-radius: 8px;">
+                        <h4 style="margin: 0 0 10px 0;">Afficher une Réservation par ID</h4>
+                        <form onsubmit="event.preventDefault(); showReservationById();">
+                            <div class="form-group">
+                                <input type="text" id="searchReservationId" placeholder="Entrez l'ID de la réservation"
+                                    required
+                                    style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                            </div>
+                            <button type="submit" class="btn btn-primary" style="margin-top: 10px;">Afficher</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Section Catways -->
