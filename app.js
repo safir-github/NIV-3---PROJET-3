@@ -1,3 +1,9 @@
+/**
+ * Fichier principal de l'application Express
+ * @module app
+ * @description Configure et lance le serveur Express avec toutes les routes et middlewares
+ */
+
 require('dotenv').config(); // Charge les variables du .env
 const express = require('express');
 const connectDB = require('./config/db');
