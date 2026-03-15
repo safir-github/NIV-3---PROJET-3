@@ -14,7 +14,7 @@ Ce projet représente MON travail et MON apprentissage.
 
 ---
 
-# Port de Plaisance Russell - API REST
+# ⚓ Port de Plaisance Russell - API REST
 
 Application web de gestion des réservations de catways pour le port de plaisance Russell.
 
@@ -31,7 +31,7 @@ Application web de gestion des réservations de catways pour le port de plaisanc
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [Démarrage](#démarrage)
-- [Accès à l'application](#accès à l'application)
+- [Accès à l'application](#accès à-lapplication)
 - [Comptes de test](#comptes-de-test)
 - [Documentation API](#documentation-api)
 - [Tests](#tests)
