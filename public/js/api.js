@@ -19,7 +19,7 @@ async function apiCall(url, options = {}) {
     }
 
     try {
-        const response = await fetch(`http://localhost:3000${url}`, {
+        const response = await fetch(url, {
             ...options,
             headers
         });
